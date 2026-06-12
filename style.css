@@ -1,0 +1,79 @@
+/* Custom CSS Variables Definitions */
+:root {
+    --primary-red: #dc2626;
+    --primary-yellow: #eab308;
+    --primary-green: #16a34a;
+    --dark-bg: #0f172a;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Smooth View Layout Transitions */
+.view-section {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out forwards;
+}
+.view-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sold Out Cards Overlay Mask */
+.sold-out-card {
+    position: relative;
+    opacity: 0.6;
+    filter: grayscale(40%);
+}
+.sold-out-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--primary-red);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Custom Styled Scrollbar Elements */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Pulse Animation for Live Sticky Header Banner */
+.pulse-banner {
+    animation: pulseBg 2s infinite;
+}
+@keyframes pulseBg {
+    0%, 100% { background-color: #ef4444; }
+    50% { background-color: #991b1b; }
+}
+
+/* Text Custom Contrast Accent Alignments */
+.logo-text-day-red { color: var(--primary-red); font-weight: 800; }
+.logo-text-2-yellow { color: var(--primary-yellow); font-weight: 900; }
+.logo-text-day-green { color: var(--primary-green); font-weight: 800; }
