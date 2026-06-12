@@ -1,42 +1,38 @@
-<style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            scroll-behavior: smooth;
-        }
-        
-        /* Modern visual gradient background for homepage spotlight */
-        .gradient-bg { 
-            background: linear-gradient(135deg, #f0fdf4 0%, #fef3c7 100%); 
-        }
+body { 
+    font-family: 'Inter', sans-serif; 
+    scroll-behavior: smooth;
+}
 
-        /* Customized scrollbars for elegant UI list containers */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+/* Modern visual gradient background for homepage spotlight */
+.gradient-bg { 
+    background: linear-gradient(135deg, #f0fdf4 0%, #fef3c7 100%); 
+}
 
-        /* Input field error animations for user form feedback */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-4px); }
-            75% { transform: translateX(4px); }
-        }
-        .input-error {
-            border-color: #ef4444 !important;
-            animation: shake 0.2s ease-in-out 2;
-            background-color: #fef2f2 !important;
-        }
-    </style>
-</head>
-<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
+/* Customized scrollbars for elegant UI list containers */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Input field error animations for user form feedback */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+.input-error {
+    border-color: #ef4444 !important;
+    animation: shake 0.2s ease-in-out 2;
+    background-color: #fef2f2 !important;
+}
