@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAY 2 DAY Restaurant - Vennikkulam</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="kitchen-closed-banner" class="pulse-banner text-white text-center py-2 px-4 font-semibold text-sm hidden sticky top-0 z-50 shadow-md">
+        ⚠️ KITCHEN IS CLOSED TEMPORARILY! Orders are currently paused by the administrator.
+    </div>
+
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="switchView('home-view')">
+                    <span class="text-2xl tracking-tight">
+                        <span class="logo-text-day-red">DAY</span><span class="logo-text-2-yellow">2</span><span class="logo-text-day-green">DAY</span>
+                    </span>
+                    <span class="text-xs bg-slate-100 text-slate-600 font-medium px-2 py-0.5 rounded border border-slate-200">Vennikkulam</span>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button onclick="switchView('home-view')" class="text-slate-600 hover:text-red-600 font-medium text-sm px-2 py-1 transition">Home</button>
+                    <button onclick="switchView('menu-view')" class="bg-red-600 hover:bg-red-700 text-white font-medium text-sm px-4 py-2 rounded-lg shadow-sm transition">Order Now</button>
+                    <button onclick="openAdminAuthModal()" class="text-slate-500 hover:text-slate-800 font-medium text-sm flex items-center space-x-1 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-50 transition">
+                        <span>Owner Login</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home-view" class="view-section active max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="text-center py-16 bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl shadow-xl px-4 relative overflow-hidden mb-12">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
+                Welcome to <span class="logo-text-day-red">DAY</span><span class="logo-text-2-yellow">2</span><span class="logo-text-day-green">DAY</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-8 font-light">
+                Experience the authentic taste of premium Arabian Mandhi & Grilled Al Faham Chicken right here in <span class="text-yellow-400 font-medium">Vennikkulam</span>.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="switchView('menu-view')" class="bg-yellow-500 hover:bg-yellow-600 text-slate-950 font-bold px-8 py-3.5 rounded-xl shadow-lg transform transition active:scale-95">
+                    Explore Food Menu
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-start space-x-4">
+                <div class="p-3 bg-red-100 text-red-600 rounded-lg font-bold text-xl">🍗</div>
+                <div>
+                    <h3 class="font-bold text-lg mb-1">Authentic Flavors</h3>
+                    <p class="text-sm text-slate-500">Premium recipes customized with Normal, Kanthari, or Spicy Peri Peri choices.</p>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-start space-x-4">
+                <div class="p-3 bg-yellow-100 text-yellow-600 rounded-lg font-bold text-xl">⚡</div>
+                <div>
+                    <h3 class="font-bold text-lg mb-1">Live Order Status</h3>
+                    <p class="text-sm text-slate-500">Track item availability instantly. No outdated lists or unexpected cancellations.</p>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-start space-x-4">
+                <div class="p-3 bg-green-100 text-green-600 rounded-lg font-bold text-xl">📍</div>
+                <div>
+                    <h3 class="font-bold text-lg mb-1">Vennikkulam Branch</h3>
+                    <p class="text-sm text-slate-500">Convenient location providing quick takeaways and direct doorstep execution channels.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu-view" class="view-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-slate-200 pb-4">
+            <div>
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Our Delicious Menu</h2>
+                <p class="text-sm text-slate-500 mt-1">Select your dishes and customize portions instantly.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="filterMenu('all')" id="cat-btn-all" class="cat-btn active bg-slate-900 text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow-sm">All Dishes</button>
+                <button onclick="filterMenu('al-faham')" id="cat-btn-al-faham" class="cat-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-lg transition hover:bg-slate-50">Al Faham</button>
+                <button onclick="filterMenu('rice-items')" id="cat-btn-rice-items" class="cat-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-lg transition hover:bg-slate-50">Rice Items</button>
+                <button onclick="filterMenu('beverages')" id="cat-btn-beverages" class="cat-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-lg transition hover:bg-slate-50">Beverages</button>
+            </div>
+        </div>
+
+        <div id="food-menu-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            </div>
+    </section>
+
+    <section id="admin-dashboard-view" class="view-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-slate-900 text-white rounded-2xl p-6 md:p-8 shadow-lg mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="text-xs font-semibold tracking-widest bg-red-600 px-2.5 py-1 rounded-full uppercase">Owner Admin Hub</span>
+                <h2 class="text-3xl font-black tracking-tight mt-2">DAY 2 DAY Dashboard</h2>
+                <p class="text-slate-400 text-sm mt-1">Live Management: Vennikkulam Base Operations Center</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="admin-kitchen-toggle-btn" onclick="toggleKitchenStatus()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow transition">
+                    🟢 Kitchen Status: OPEN
+                </button>
+                <button onclick="exitAdminDashboard()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-medium text-sm px-4 py-2.5 rounded-xl transition">
+                    Logout Panel
+                </button>
+            </div>
+        </div>
+
+        <div class="flex space-x-2 border-b border-slate-200 mb-6">
+            <button onclick="switchAdminTab('live-orders')" id="tab-btn-live-orders" class="admin-tab-btn border-b-2 border-red-600 text-slate-900 px-4 py-2.5 font-bold text-sm transition">Live Customer Queue</button>
+            <button onclick="switchAdminTab('stock-manager')" id="tab-btn-stock-manager" class="admin-tab-btn border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 font-medium text-sm transition">Food Availability System</button>
+        </div>
+
+        <div id="admin-live-orders-panel" class="admin-tab-content block">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="font-bold text-slate-800 text-base">Active Processing Queue</h3>
+                    <span id="queue-counter-badge" class="bg-red-100 text-red-600 text-xs font-extrabold px-3 py-1 rounded-full">0 Orders Pending</span>
+                </div>
+                <div id="admin-orders-list-target" class="divide-y divide-slate-100">
+                    <p class="text-center text-slate-400 text-sm py-12">No active orders in processing queue right now.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-stock-manager-panel" class="admin-tab-content hidden">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 bg-slate-50 border-b border-slate-200">
+                    <h3 class="font-bold text-slate-800 text-base">Toggle Live Stock Availability</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Toggling an item to sold-out locks it on customer menus in milliseconds.</p>
+                </div>
+                <div id="admin-stock-grid-target" class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="order-customizer-modal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 animate-fadeIn overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-start">
+                <div>
+                    <h3 id="modal-food-title" class="text-2xl font-black text-slate-900 tracking-tight">Food Customization</h3>
+                    <p id="modal-food-desc" class="text-xs text-slate-500 mt-1">Select your specifications below.</p>
+                </div>
+                <button onclick="closeCustomizerModal()" class="text-slate-400 hover:text-slate-600 bg-slate-100 hover:bg-slate-200 p-1.5 rounded-full transition">&times;</button>
+            </div>
+            
+            <div class="p-6 space-y-6">
+                <div id="modal-portion-block">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Select Portion Variant</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="selectPortionOption('Quarter')" id="p-opt-Quarter" class="portion-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Quarter</button>
+                        <button onclick="selectPortionOption('Half')" id="p-opt-Half" class="portion-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Half</button>
+                        <button onclick="selectPortionOption('Full')" id="p-opt-Full" class="portion-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Full</button>
+                    </div>
+                </div>
+
+                <div id="modal-flavor-block" class="hidden">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Select Flavor Profiling</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="selectFlavorOption('Normal')" id="f-opt-Normal" class="flavor-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Normal</button>
+                        <button onclick="selectFlavorOption('Kanthari')" id="f-opt-Kanthari" class="flavor-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Kanthari</button>
+                        <button onclick="selectFlavorOption('Peri Peri')" id="f-opt-Peri-Peri" class="flavor-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Peri Peri</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="customer-input-name" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Your Full Name <span class="text-red-500">*</span></label>
+                    <input type="text" id="customer-input-name" placeholder="Enter your name here..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 transition">
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-xl flex justify-between items-center border border-slate-100">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Estimated Subtotal:</span>
+                    <span id="modal-live-subtotal-price" class="text-xl font-extrabold text-slate-900">₹0.00</span>
+                </div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex space-x-2">
+                <button onclick="closeCustomizerModal()" class="w-1/3 bg-white border border-slate-200 text-slate-600 font-semibold text-sm py-3 rounded-xl hover:bg-slate-100 transition">Cancel</button>
+                <button onclick="submitFinalCustomerOrder()" class="w-2/3 bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3 rounded-xl shadow-md transition transform active:scale-95">Place Live Order</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-auth-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl max-w-xs w-full p-6 border border-slate-100 animate-fadeIn">
+            <h3 class="text-lg font-bold text-slate-900 mb-1">Administrative Access</h3>
+            <p class="text-xs text-slate-500 mb-4">Input password passcode to open your management engine console panels.</p>
+            <input type="password" id="admin-passcode-input" placeholder="Enter dashboard pass..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 mb-4 transition">
+            <div class="flex space-x-2">
+                <button onclick="closeAdminAuthModal()" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium text-xs py-2 rounded-lg transition">Dismiss</button>
+                <button onclick="verifyAdminPasscodeCredentials()" class="w-1/2 bg-slate-900 hover:bg-black text-white font-bold text-xs py-2 rounded-lg transition">Verify Log</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-slate-200 mt-20 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-2">
+            <p class="text-sm font-bold tracking-tight">
+                <span class="logo-text-day-red">DAY</span><span class="logo-text-2-yellow">2</span><span class="logo-text-day-green">DAY</span> Restaurant
+            </p>
+            <p class="text-xs text-slate-400">📍 Location Hub: Vennikkulam Junction, Pathanamthitta Route, India</p>
+            <p class="text-[10px] text-slate-300">Real-time Node: GunDB Peer-to-Peer Secure Synchronized Infrastructure.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
