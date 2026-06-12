@@ -3,572 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAY2DAY - Authentic Kerala Cuisine | Vennikkulam</title>
+    <title>DAY 2 DAY Restaurant - Vennikkulam</title>
     
-    <!-- External Framework Integration -->
-    <!-- Tailwind CSS for high-fidelity responsive layout rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts integration for standard high-contrast typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- GunDB decentralized peer-to-peer real-time sync network -->
-    <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script> 
-    <!-- Live UI Alert Toast Notification component -->
-    <div id="toast" class="fixed top-5 right-5 bg-green-600 text-white px-6 py-3 rounded-xl shadow-2xl z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3">
-        <span id="toast-icon" class="font-bold text-lg">✓</span>
-        <span id="toast-message" class="font-medium">Notification message here</span>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="kitchen-closed-banner" class="pulse-banner text-white text-center py-2 px-4 font-semibold text-sm hidden sticky top-0 z-50 shadow-md">
+        ⚠️ KITCHEN IS CLOSED TEMPORARILY! Orders are currently paused by the administrator.
     </div>
 
-    <!-- Sticky Main Navigation Header -->
-    <nav class="bg-white shadow-md sticky top-0 z-50 border-b-4 border-green-600" id="app-nav">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <div class="flex items-center gap-3">
-                <!-- Color-Coded Capitalized Branding: DAY (Red) + 2 (Yellow) + DAY (Green) -->
-                <button onclick="showView('home')" class="text-3xl font-extrabold tracking-tight flex items-baseline focus:outline-none">
-                    <span class="text-red-600">DAY</span><span class="text-yellow-500">2</span><span class="text-green-600">DAY</span> <span class="text-xs text-red-600 font-semibold ml-2">Vennikkulam</span>
-                </button>
-                <!-- Multi-Computer Sync State Connectivity Indicator -->
-                <span id="db-status" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-yellow-100 text-yellow-800 transition-all duration-300">
-                    <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span> Connecting...
-                </span>
-            </div>
-            <div class="space-x-2 md:space-x-4 flex items-center font-medium text-sm sm:text-base">
-                <button id="nav-home" onclick="showView('home')" class="px-3 py-1.5 md:px-4 md:py-2 rounded-full text-green-700 hover:text-red-600 transition duration-300 font-bold bg-green-50">Home</button>
-                <button id="nav-menu" onclick="showView('menu')" class="px-3 py-1.5 md:px-4 md:py-2 rounded-full text-green-700 hover:text-red-600 transition duration-300 font-bold">Menu</button>
-                <!-- Protected Administrative Portal Entry Link -->
-                <button id="nav-admin-btn" onclick="openLoginModal()" class="text-green-700 font-bold hover:text-red-600 border border-green-600 px-3 py-1.5 md:px-4 md:py-1.5 rounded-full transition duration-300 relative flex items-center gap-1.5">
-                    <span>Owner Login</span>
-                    <span id="nav-order-badge" class="bg-red-600 text-white text-[10px] w-4.5 h-4.5 rounded-full flex items-center justify-center hidden animate-bounce font-extrabold px-1">0</span>
-                </button>
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="switchView('home-view')">
+                    <span class="text-2xl tracking-tight">
+                        <span class="logo-text-day-red">DAY</span><span class="logo-text-2-yellow">2</span><span class="logo-text-day-green">DAY</span>
+                    </span>
+                    <span class="text-xs bg-slate-100 text-slate-600 font-medium px-2 py-0.5 rounded border border-slate-200">Vennikkulam</span>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button onclick="switchView('home-view')" class="text-slate-600 hover:text-red-600 font-medium text-sm px-2 py-1 transition">Home</button>
+                    <button onclick="switchView('menu-view')" class="bg-red-600 hover:bg-red-700 text-white font-medium text-sm px-4 py-2 rounded-lg shadow-sm transition">Order Now</button>
+                    <button onclick="openAdminAuthModal()" class="text-slate-500 hover:text-slate-800 font-medium text-sm flex items-center space-x-1 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-50 transition">
+                        <span>Owner Login</span>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Real-Time Kitchen Operations Banner Notice (Shown automatically if kitchen is toggled off) -->
-    <div id="kitchen-closed-banner" class="bg-red-600 text-white text-center py-3.5 px-4 font-black text-xs md:text-sm hidden sticky top-[120px] sm:top-[76px] z-40 shadow-md">
-        ⚠️ THE KITCHEN IS TEMPORARILY CLOSED. ONLINE ORDERS ARE PAUSED AT THE MOMENT.
-    </div>
-
-    <!-- Owner Dashboard Login Verification Overlay modal -->
-    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-65 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl relative">
-            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-600 text-2xl font-bold">&times;</button>
-            
-            <div class="text-center mb-6">
-                <span class="text-4xl">🔐</span>
-                <h3 class="text-2xl font-bold text-green-800 mt-2">Owner Login</h3>
-                <p class="text-gray-500 text-sm mt-1">Enter password to access dashboard</p>
-            </div>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Admin Password</label>
-                    <input type="password" id="login-password" onkeydown="if(event.key === 'Enter') verifyAdminPassword()" placeholder="••••" class="w-full border bg-gray-50 rounded-xl px-4 py-3 text-center text-lg focus:bg-white focus:border-green-600 focus:outline-none tracking-widest">
-                </div>
-                <div id="login-error" class="text-red-600 text-xs font-semibold text-center hidden">Incorrect password. Please try again!</div>
-                
-                <button onclick="verifyAdminPassword()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl font-bold transition shadow-md">
-                    Access Dashboard
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN INTERACTIVE VIEW 1: HOME PANEL -->
-    <div id="home-view" class="view-section flex-grow">
-        <header class="py-20 md:py-28 gradient-bg text-center relative overflow-hidden">
-            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#15803d_1px,transparent_1px)] [background-size:16px_16px]"></div>
-            <div class="max-w-4xl mx-auto px-4 relative z-10">
-                <span class="bg-red-100 text-red-700 font-bold px-4 py-1.5 rounded-full text-sm uppercase tracking-wider inline-block">Now in Vennikkulam</span>
-                <h2 class="text-4xl md:text-6xl font-extrabold my-6 text-green-900 leading-tight">Taste of Kerala, <span class="text-red-600 block md:inline">Every Day.</span></h2>
-                <p class="text-lg md:text-xl text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed">From our hot tawa directly to your table — experience the authentic rich spices and delicious traditions of Kerala, crafted with pure passion.</p>
-                <button onclick="showView('menu')" class="bg-yellow-400 hover:bg-yellow-500 text-green-950 px-10 py-4 rounded-full font-extrabold text-lg transition duration-300 shadow-xl border-2 border-yellow-600 inline-block transform hover:scale-105 animate-bounce">Explore Our Menu</button>
-            </div>
-        </header>
-
-        <!-- Dynamic Brand Spotlights -->
-        <section class="py-20 max-w-6xl mx-auto px-4 text-center">
-            <h3 class="text-3xl md:text-4xl font-bold text-green-800 mb-3">Why Dine With Us?</h3>
-            <p class="text-gray-500 max-w-2xl mx-auto mb-14">We bring authentic Malabar and Travancore culinary magic straight to the heart of Vennikkulam.</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-8 bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-                    <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-6 text-4xl">🔥</div>
-                    <h4 class="text-2xl font-bold mb-3 text-gray-800">Fresh from the Tawa</h4>
-                    <p class="text-gray-600 leading-relaxed">Every soft Vellayappam, thin Pathiri, and flaky Porotta is prepared scalding hot to your exact order.</p>
-                </div>
-                <div class="p-8 bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-                    <div class="w-16 h-16 bg-yellow-50 rounded-2xl flex items-center justify-center mx-auto mb-6 text-4xl">🌶️</div>
-                    <h4 class="text-2xl font-bold mb-3 text-gray-800">Genuine Hand-Ground Spices</h4>
-                    <p class="text-gray-600 leading-relaxed">Fresh spices ground in-house cooked slowly to deliver rich, traditional Malabari & Travancore flavors.</p>
-                </div>
-                <div class="p-8 bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-                    <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-6 text-4xl">🏠</div>
-                    <h4 class="text-2xl font-bold mb-3 text-gray-800">True Home Recipes</h4>
-                    <p class="text-gray-600 leading-relaxed">Classic dishes prepared using slow traditional family methods passed down through generations.</p>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- MAIN INTERACTIVE VIEW 2: CUSTOMER FOOD CATALOG -->
-    <div id="menu-view" class="view-section flex-grow hidden">
-        <section class="py-12 max-w-6xl mx-auto px-4">
-            <div class="text-center max-w-3xl mx-auto mb-10">
-                <h3 class="text-3xl md:text-5xl font-extrabold mb-4 text-green-900">Our <span class="text-red-600">Authentic</span> Kerala Menu</h3>
-                <p class="text-gray-600 font-medium text-base md:text-lg">Select a category below or search for a dish. Tap any item to choose your portion and place your live order.</p>
-            </div>
-            
-            <!-- Live Catalog Filters and Text Search Box -->
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 bg-white p-4 rounded-2xl shadow-sm border">
-                <div class="flex flex-wrap gap-2 w-full md:w-auto justify-center">
-                    <button onclick="filterMenu('all')" id="cat-all" class="cat-btn px-4 py-2 rounded-full font-bold text-sm bg-green-700 text-white transition">All Items</button>
-                    <button onclick="filterMenu('main')" id="cat-main" class="cat-btn px-4 py-2 rounded-full font-bold text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition">Main Course</button>
-                    <button onclick="filterMenu('appetizer')" id="cat-appetizer" class="cat-btn px-4 py-2 rounded-full font-bold text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition">Snacks & Starters</button>
-                    <button onclick="filterMenu('drink')" id="cat-drink" class="cat-btn px-4 py-2 rounded-full font-bold text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition">Beverages</button>
-                </div>
-                <div class="relative w-full md:w-64">
-                    <input type="text" id="menu-search" oninput="handleMenuSearch()" placeholder="Search dishes..." class="w-full pl-10 pr-4 py-2 text-sm rounded-xl border focus:outline-none focus:border-green-600 bg-gray-50 focus:bg-white transition">
-                    <span class="absolute left-3.5 top-2.5 text-gray-400 text-sm">🔍</span>
-                </div>
-            </div>
-            
-            <!-- Dynamic Menu Grid Container (Populated via JS Engine) -->
-            <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Loaded dynamically by Javascript -->
-            </div>
-        </section>
-    </div>
-
-    <!-- MAIN INTERACTIVE VIEW 3: OWNER ADMINISTRATIVE PORTAL -->
-    <div id="admin-view" class="view-section hidden py-10 max-w-6xl mx-auto px-4 flex-grow">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b pb-6">
-            <div>
-                <div class="flex items-center gap-2">
-                    <span class="text-3xl">👨‍🍳</span>
-                    <h2 class="text-3xl font-extrabold text-green-950">Owner Dashboard</h2>
-                </div>
-                <p class="text-gray-500 text-sm mt-1">Real-time order processing, menu editing, stock availability, sales history, and kitchen configurations</p>
-            </div>
-            <div class="flex gap-3">
-                <button onclick="showView('home')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-6 py-2.5 rounded-full font-bold transition flex items-center gap-2 text-sm border">
-                    <span>←</span> Exit Dashboard
+    <section id="home-view" class="view-section active max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="text-center py-16 bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl shadow-xl px-4 relative overflow-hidden mb-12">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
+                Welcome to <span class="logo-text-day-red">DAY</span><span class="logo-text-2-yellow">2</span><span class="logo-text-day-green">DAY</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-8 font-light">
+                Experience the authentic taste of premium Arabian Mandhi & Grilled Al Faham Chicken right here in <span class="text-yellow-400 font-medium">Vennikkulam</span>.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="switchView('menu-view')" class="bg-yellow-500 hover:bg-yellow-600 text-slate-950 font-bold px-8 py-3.5 rounded-xl shadow-lg transform transition active:scale-95">
+                    Explore Food Menu
                 </button>
             </div>
         </div>
 
-        <!-- Dashboard Sub-Tabs Routing -->
-        <div class="flex border-b border-gray-200 mb-8 overflow-x-auto gap-2">
-            <button onclick="showAdminTab('orders')" id="tab-orders-btn" class="px-6 py-3 font-bold border-b-4 border-green-600 text-green-700 flex items-center gap-2 whitespace-nowrap">
-                Live Orders Queue <span id="dashboard-order-badge" class="bg-red-600 text-white text-xs px-2.5 py-0.5 rounded-full font-black">0</span>
-            </button>
-            <button onclick="showAdminTab('menu-edit')" id="tab-menu-edit-btn" class="px-6 py-3 font-bold text-gray-500 hover:text-green-700 transition whitespace-nowrap">
-                Manage Menu Items & Stock
-            </button>
-            <button onclick="showAdminTab('history')" id="tab-history-btn" class="px-6 py-3 font-bold text-gray-500 hover:text-green-700 transition whitespace-nowrap">
-                Sales & History Log
-            </button>
-            <button onclick="showAdminTab('qr-generator')" id="tab-qr-generator-btn" class="px-6 py-3 font-bold text-gray-500 hover:text-green-700 transition whitespace-nowrap">
-                Generate Customer QR Codes 📱
-            </button>
-            <button onclick="showAdminTab('settings')" id="tab-settings-btn" class="px-6 py-3 font-bold text-gray-500 hover:text-green-700 transition whitespace-nowrap">
-                Kitchen Control & Safety
-            </button>
-        </div>
-        
-        <!-- DASHBOARD TAB 1: Real-Time Kanban Order Board -->
-        <div id="tab-orders" class="admin-tab">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- PENDING ORDER COL -->
-                <div class="bg-amber-50 p-5 rounded-2xl border border-amber-200 shadow-sm">
-                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-amber-200">
-                        <span class="font-bold text-amber-800 uppercase text-xs tracking-wider flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span> New Orders
-                        </span>
-                        <span id="count-pending" class="bg-amber-200 text-amber-850 text-xs px-2.5 py-0.5 rounded-full font-bold">0</span>
-                    </div>
-                    <div id="orders-pending-container" class="space-y-4 max-h-[600px] overflow-y-auto pr-1">
-                        <!-- Loaded dynamically -->
-                    </div>
-                </div>
-
-                <!-- PREPARING KITCHEN COL -->
-                <div class="bg-blue-50 p-5 rounded-2xl border border-blue-200 shadow-sm">
-                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-blue-200">
-                        <span class="font-bold text-blue-800 uppercase text-xs tracking-wider flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-spin"></span> In Kitchen (Preparing)
-                        </span>
-                        <span id="count-preparing" class="bg-blue-200 text-blue-855 text-xs px-2.5 py-0.5 rounded-full font-bold">0</span>
-                    </div>
-                    <div id="orders-preparing-container" class="space-y-4 max-h-[600px] overflow-y-auto pr-1">
-                        <!-- Loaded dynamically -->
-                    </div>
-                </div>
-
-                <!-- COMPLETED / SERVED TICKETS COL -->
-                <div class="bg-green-50 p-5 rounded-2xl border border-green-200 shadow-sm">
-                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-green-200">
-                        <span class="font-bold text-green-800 uppercase text-xs tracking-wider flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span> Completed & Served
-                        </span>
-                        <span id="count-completed" class="bg-green-200 text-green-855 text-xs px-2.5 py-0.5 rounded-full font-bold">0</span>
-                    </div>
-                    <div id="orders-completed-container" class="space-y-4 max-h-[600px] overflow-y-auto pr-1">
-                        <!-- Loaded dynamically -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DASHBOARD TAB 2: Dynamic Food Catalog Editor -->
-        <div id="tab-menu-edit" class="admin-tab hidden space-y-8">
-            <!-- Add New Dish Entry Card -->
-            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-lg border border-green-100 max-w-3xl mx-auto">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="text-3xl">🍲</span>
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-850">Add New Food Item</h3>
-                        <p class="text-sm text-gray-550">Insert a brand new culinary specialty into your restaurant's digital menu (Image-Free design with live stock defaults)</p>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Display Name / Title</label>
-                        <input type="text" id="add-food-name" placeholder="e.g. Kozhi Pidi" class="w-full border rounded-xl px-3 py-2.5 text-sm focus:border-green-500 focus:outline-none bg-gray-50 focus:bg-white transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Price (Base / Quarter portion)</label>
-                        <input type="text" id="add-food-price" placeholder="e.g. ₹150" value="₹" class="w-full border rounded-xl px-3 py-2.5 text-sm focus:border-green-500 focus:outline-none bg-gray-50 focus:bg-white transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Category</label>
-                        <select id="add-food-category" class="w-full border rounded-xl px-3 py-2.5 text-sm focus:border-green-500 focus:outline-none bg-gray-50 focus:bg-white transition">
-                            <option value="main">Main Course</option>
-                            <option value="appetizer">Snack / Appetizer</option>
-                            <option value="drink">Beverage / Drink</option>
-                        </select>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Short Description</label>
-                        <input type="text" id="add-food-desc" placeholder="Briefly describe the taste and key ingredients..." class="w-full border rounded-xl px-3 py-2.5 text-sm focus:border-green-500 focus:outline-none bg-gray-50 focus:bg-white transition">
-                    </div>
-                </div>
-                
-                <div class="mt-6 flex justify-end">
-                    <button onclick="addFoodItem()" class="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3.5 rounded-full text-sm transition shadow-lg flex items-center justify-center gap-2">
-                        <span>＋ Add to Digital Menu</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Current Catalog Modification List (With Stock Switches) -->
-            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-gray-100 max-w-4xl mx-auto">
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Edit Current Menu, Prices & Stock Status</h3>
-                <p class="mb-6 text-sm text-gray-500">Update pricing details, toggle availability states on the fly, or delete items permanently.</p>
-                <div id="admin-menu-list" class="space-y-4">
-                    <!-- Loaded dynamically via JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- DASHBOARD TAB 3: Scan-to-Order QR Engine -->
-        <div id="tab-qr-generator" class="admin-tab hidden">
-            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl max-w-2xl mx-auto border border-gray-100 space-y-6">
-                <div class="text-center">
-                    <span class="text-5xl">📱</span>
-                    <h3 class="text-2xl font-bold text-gray-800 mt-3">Scan-To-Order QR Generator</h3>
-                    <p class="text-sm text-gray-500 mt-1">Generate custom scan links for tables or tablets. Customers scan, choose, and order directly to your dashboard.</p>
-                </div>
-
-                <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200 text-xs text-yellow-900 leading-relaxed">
-                    <strong>💡 How it works:</strong> Generate a QR code of the menu. Show this QR on printed labels or table cards. Customers scan it with their phone camera and place orders in real-time. Both computers will sync up.
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Label / Name / Table Identifier</label>
-                        <input type="text" id="qr-table-label" placeholder="e.g., Table 5, Parcel, Counter" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-green-600">
-                    </div>
-                    <button onclick="generateCustomQRCode()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-full transition shadow-md">
-                        Generate Live Ordering QR
-                    </button>
-                </div>
-
-                <!-- Live Generated Output Screen -->
-                <div id="qr-result-box" class="hidden text-center border-t pt-6 flex flex-col items-center">
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Your Scan & Order QR Code</p>
-                    <div class="bg-white p-4 rounded-2xl border-2 border-dashed border-gray-200 inline-block shadow-sm">
-                        <img id="generated-qr-img" src="" alt="Live QR Code" class="w-48 h-48 mx-auto">
-                    </div>
-                    <p id="qr-link-text" class="text-xs text-gray-500 font-medium mt-3 bg-gray-50 px-3 py-1.5 rounded-full select-all max-w-full truncate break-all"></p>
-                    <div class="flex gap-2 mt-4">
-                        <button onclick="window.open(document.getElementById('generated-qr-img').src, '_blank')" class="text-xs font-bold text-green-700 hover:underline bg-green-50 px-4 py-2 rounded-full">Open Image</button>
-                        <button onclick="copyQRLinkToClipboard()" class="text-xs font-bold text-blue-700 hover:underline bg-blue-50 px-4 py-2 rounded-full">Copy URL Link</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DASHBOARD TAB 4: Sales ledger & performance records -->
-        <div id="tab-history" class="admin-tab hidden space-y-6">
-            <!-- Analytics Summary Overview Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                    <div class="flex items-center justify-between">
-                        <span class="text-gray-500 font-bold text-sm uppercase">Total Revenue</span>
-                        <span class="text-2xl">💰</span>
-                    </div>
-                    <h4 id="stat-revenue" class="text-3xl font-black text-green-700 mt-2">₹0</h4>
-                    <p class="text-xs text-gray-400 mt-1">From all completed & archived sales</p>
-                </div>
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                    <div class="flex items-center justify-between">
-                        <span class="text-gray-500 font-bold text-sm uppercase">Orders Served</span>
-                        <span class="text-2xl">🍽️</span>
-                    </div>
-                    <h4 id="stat-order-count" class="text-3xl font-black text-gray-800 mt-2">0</h4>
-                    <p class="text-xs text-gray-400 mt-1">Successful restaurant tickets</p>
-                </div>
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                    <div class="flex items-center justify-between">
-                        <span class="text-gray-500 font-bold text-sm uppercase">Most Popular Dish</span>
-                        <span class="text-2xl">🔥</span>
-                    </div>
-                    <h4 id="stat-favorite" class="text-2xl font-extrabold text-red-600 mt-2 truncate">None Yet</h4>
-                    <p class="text-xs text-gray-400 mt-1">Highest frequency in history logs</p>
-                </div>
-            </div>
-
-            <!-- Historical Sales Ledger Log -->
-            <div class="bg-white p-6 rounded-3xl shadow-md border border-gray-100">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-800">Completed & Archived Sales Log</h3>
-                        <p class="text-xs text-gray-500 mt-0.5">Permanent digital historical registry of all transactions</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2 w-full md:w-auto">
-                        <input type="text" id="history-search" oninput="renderSalesHistory()" placeholder="Search past items or names..." class="px-4 py-2 text-xs border rounded-xl focus:outline-none focus:border-green-600 bg-gray-50 focus:bg-white transition w-full md:w-48">
-                        <button onclick="window.print()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs border transition flex items-center gap-1">
-                            <span>🖨️</span> Print Report
-                        </button>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto rounded-2xl border">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50 text-gray-500 uppercase tracking-wider border-b">
-                                <th class="p-4 font-bold">Ticket</th>
-                                <th class="p-4 font-bold">Time & Date</th>
-                                <th class="p-4 font-bold">Dish Name</th>
-                                <th class="p-4 font-bold">Portion/Qty</th>
-                                <th class="p-4 font-bold">Customer Name</th>
-                                <th class="p-4 font-bold">Revenue</th>
-                                <th class="p-4 font-bold">Status</th>
-                                <th class="p-4 font-bold text-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-table-body" class="divide-y">
-                            <!-- Populated dynamically via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- DASHBOARD TAB 5: Kitchen Configuration & Sync Panel -->
-        <div id="tab-settings" class="admin-tab hidden">
-            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl max-w-2xl mx-auto border border-gray-100 space-y-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-start space-x-4">
+                <div class="p-3 bg-red-100 text-red-600 rounded-lg font-bold text-xl">🍗</div>
                 <div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-1">Kitchen & Security Control Panel</h3>
-                    <p class="text-sm text-gray-500">Configure client-facing business operations, sync keys, notification sound, and security details.</p>
-                </div>
-                
-                <div class="space-y-6 border-t pt-6">
-                    <!-- Real-Time Multi-Computer Sync State panel -->
-                    <div class="bg-blue-50 p-5 rounded-2xl border border-blue-200 space-y-3">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xl">📡</span>
-                            <span class="font-bold text-blue-900 block">Real-Time Multi-Computer Syncing</span>
-                        </div>
-                        <p class="text-xs text-blue-700 leading-relaxed">
-                            To sync orders <strong>lively</strong> across different computers, open this same downloaded file on both machines and ensure they use the <strong>same Sync Room ID</strong> below.
-                        </p>
-                        <div>
-                            <label class="block text-xs font-bold text-blue-800 uppercase mb-1">Sync Room ID</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="sync-room-id" value="DAY2DAY-PTA-8590" class="w-full border rounded-xl px-3 py-2 text-sm focus:border-blue-600 focus:outline-none bg-white font-mono font-bold uppercase tracking-wider">
-                                <button onclick="updateSyncRoomId()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-4 py-2 rounded-xl font-bold transition whitespace-nowrap shadow-md">
-                                    Set Sync Room
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Operations Status Switcher -->
-                    <div class="flex items-center justify-between gap-4 border-t pt-6">
-                        <div>
-                            <span class="font-bold text-gray-800 block">Kitchen Operations Status</span>
-                            <span class="text-xs text-gray-500 block">Turn OFF to temporarily freeze users from placing online tickets.</span>
-                        </div>
-                        <button onclick="toggleKitchenStatus()" id="kitchen-status-btn" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition shadow-sm text-xs md:text-sm whitespace-nowrap">
-                            KITCHEN OPEN
-                        </button>
-                    </div>
-
-                    <!-- Sound Notification Control Switcher -->
-                    <div class="flex items-center justify-between gap-4 border-t pt-6">
-                        <div>
-                            <span class="font-bold text-gray-800 block">Incoming Order Chime Alert</span>
-                            <span class="text-xs text-gray-500 block">Play synthetic Audio context bell chime sounds when a customer orders.</span>
-                        </div>
-                        <button onclick="toggleAlertSound()" id="sound-status-btn" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition shadow-sm text-xs md:text-sm whitespace-nowrap">
-                            ALERT CHIME ACTIVE
-                        </button>
-                    </div>
-
-                    <!-- Direct WhatsApp dispatching switcher -->
-                    <div class="flex items-center justify-between gap-4 border-t pt-6">
-                        <div>
-                            <span class="font-bold text-gray-800 block">WhatsApp Order Dispatch</span>
-                            <span class="text-xs text-gray-500 block">Open kitchen WhatsApp thread (+91 90611 70906) automatically on placement.</span>
-                        </div>
-                        <button onclick="toggleWhatsAppDispatch()" id="whatsapp-dispatch-btn" class="px-5 py-2.5 bg-gray-500 hover:bg-gray-655 text-white font-bold rounded-full transition shadow-sm text-xs md:text-sm whitespace-nowrap">
-                            DISPATCH DISABLED
-                        </button>
-                    </div>
-
-                    <!-- Secure Admin Password updater module -->
-                    <div class="border-t pt-6 space-y-4">
-                        <div>
-                            <span class="font-bold text-gray-800 block">Change Owner Password</span>
-                            <span class="text-xs text-gray-500">Update the credential required to access this admin panel dashboard.</span>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">New Password</label>
-                                <input type="password" id="new-admin-password" placeholder="Enter new password" class="w-full border bg-white rounded-xl px-3 py-2 text-sm focus:border-green-600 focus:outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Confirm Password</label>
-                                <input type="password" id="confirm-admin-password" placeholder="Confirm new password" class="w-full border bg-white rounded-xl px-3 py-2 text-sm focus:border-green-600 focus:outline-none">
-                            </div>
-                        </div>
-                        <button onclick="changeAdminPassword()" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition shadow-sm text-sm">
-                            Update Password
-                        </button>
-                    </div>
+                    <h3 class="font-bold text-lg mb-1">Authentic Flavors</h3>
+                    <p class="text-sm text-slate-500">Premium recipes customized with Normal, Kanthari, or Spicy Peri Peri choices.</p>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Footer Contact & Geographical Information Block -->
-    <section id="contact" class="bg-green-900 text-white py-16 border-t-8 border-yellow-400">
-        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div>
-                <!-- Brand Footer Capitalized Multi-color Branding -->
-                <h4 class="text-2xl font-bold mb-4"><span class="text-red-500">DAY</span><span class="text-yellow-400">2</span><span class="text-green-400">DAY</span> <span class="text-white">Restaurant</span></h4>
-                <p class="text-gray-200 mb-4 leading-relaxed font-light">Bringing you the real rich flavors of Malabar and Central Travancore directly to Pathanamthitta. Prepared fresh upon order, served bubbling hot.</p>
-                <p class="text-yellow-400 font-bold italic">"From our hot tawa directly to your table"</p>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-start space-x-4">
+                <div class="p-3 bg-yellow-100 text-yellow-600 rounded-lg font-bold text-xl">⚡</div>
+                <div>
+                    <h3 class="font-bold text-lg mb-1">Live Order Status</h3>
+                    <p class="text-sm text-slate-500">Track item availability instantly. No outdated lists or unexpected cancellations.</p>
+                </div>
             </div>
-            <div>
-                <h4 class="text-2xl font-bold mb-4 text-yellow-400">Our Location</h4>
-                <address class="not-italic text-gray-200 space-y-2">
-                    <p class="font-bold text-white text-lg">DAY2DAY Restaurant</p>
-                    <p>Opposite Church, Main Road</p>
-                    <p>Vennikkulam, Kerala - 689544</p>
-                </address>
-            </div>
-            <div>
-                <h4 class="text-2xl font-bold mb-4 text-yellow-400">Get in Touch</h4>
-                <p class="text-gray-200">📞 Phone: <a href="tel:+919061170906" class="text-white hover:underline font-semibold">+91 90611 70906</a></p>
-                <p class="text-gray-200 mt-2">✉️ Email: <span class="text-white">info@day2daypta.com</span></p>
-                <div class="mt-6 pt-4 border-t border-green-800">
-                    <span class="text-xs bg-red-600 text-white font-bold px-3 py-1 rounded-full uppercase tracking-wider">Open Daily: 7:00 AM - 10:30 PM</span>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-start space-x-4">
+                <div class="p-3 bg-green-100 text-green-600 rounded-lg font-bold text-xl">📍</div>
+                <div>
+                    <h3 class="font-bold text-lg mb-1">Vennikkulam Branch</h3>
+                    <p class="text-sm text-slate-500">Convenient location providing quick takeaways and direct doorstep execution channels.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Bottom copyright metadata bar -->
-    <footer id="app-footer" class="bg-green-950 text-gray-400 py-6 text-center text-xs md:text-sm border-t border-green-900">
-        <p>&copy; 2026 <span class="text-red-500 font-semibold">DAY</span><span class="text-yellow-500 font-semibold">2</span><span class="text-green-500 font-semibold">DAY</span> Vennikkulam. All Rights Reserved. Crafted with authentic tradition.</p>
+    <section id="menu-view" class="view-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-slate-200 pb-4">
+            <div>
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Our Delicious Menu</h2>
+                <p class="text-sm text-slate-500 mt-1">Select your dishes and customize portions instantly.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="filterMenu('all')" id="cat-btn-all" class="cat-btn active bg-slate-900 text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow-sm">All Dishes</button>
+                <button onclick="filterMenu('al-faham')" id="cat-btn-al-faham" class="cat-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-lg transition hover:bg-slate-50">Al Faham</button>
+                <button onclick="filterMenu('rice-items')" id="cat-btn-rice-items" class="cat-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-lg transition hover:bg-slate-50">Rice Items</button>
+                <button onclick="filterMenu('beverages')" id="cat-btn-beverages" class="cat-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-lg transition hover:bg-slate-50">Beverages</button>
+            </div>
+        </div>
+
+        <div id="food-menu-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            </div>
+    </section>
+
+    <section id="admin-dashboard-view" class="view-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-slate-900 text-white rounded-2xl p-6 md:p-8 shadow-lg mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="text-xs font-semibold tracking-widest bg-red-600 px-2.5 py-1 rounded-full uppercase">Owner Admin Hub</span>
+                <h2 class="text-3xl font-black tracking-tight mt-2">DAY 2 DAY Dashboard</h2>
+                <p class="text-slate-400 text-sm mt-1">Live Management: Vennikkulam Base Operations Center</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="admin-kitchen-toggle-btn" onclick="toggleKitchenStatus()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow transition">
+                    🟢 Kitchen Status: OPEN
+                </button>
+                <button onclick="exitAdminDashboard()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-medium text-sm px-4 py-2.5 rounded-xl transition">
+                    Logout Panel
+                </button>
+            </div>
+        </div>
+
+        <div class="flex space-x-2 border-b border-slate-200 mb-6">
+            <button onclick="switchAdminTab('live-orders')" id="tab-btn-live-orders" class="admin-tab-btn border-b-2 border-red-600 text-slate-900 px-4 py-2.5 font-bold text-sm transition">Live Customer Queue</button>
+            <button onclick="switchAdminTab('stock-manager')" id="tab-btn-stock-manager" class="admin-tab-btn border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 font-medium text-sm transition">Food Availability System</button>
+        </div>
+
+        <div id="admin-live-orders-panel" class="admin-tab-content block">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="font-bold text-slate-800 text-base">Active Processing Queue</h3>
+                    <span id="queue-counter-badge" class="bg-red-100 text-red-600 text-xs font-extrabold px-3 py-1 rounded-full">0 Orders Pending</span>
+                </div>
+                <div id="admin-orders-list-target" class="divide-y divide-slate-100">
+                    <p class="text-center text-slate-400 text-sm py-12">No active orders in processing queue right now.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-stock-manager-panel" class="admin-tab-content hidden">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 bg-slate-50 border-b border-slate-200">
+                    <h3 class="font-bold text-slate-800 text-base">Toggle Live Stock Availability</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Toggling an item to sold-out locks it on customer menus in milliseconds.</p>
+                </div>
+                <div id="admin-stock-grid-target" class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="order-customizer-modal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-100 animate-fadeIn overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-start">
+                <div>
+                    <h3 id="modal-food-title" class="text-2xl font-black text-slate-900 tracking-tight">Food Customization</h3>
+                    <p id="modal-food-desc" class="text-xs text-slate-500 mt-1">Select your specifications below.</p>
+                </div>
+                <button onclick="closeCustomizerModal()" class="text-slate-400 hover:text-slate-600 bg-slate-100 hover:bg-slate-200 p-1.5 rounded-full transition">&times;</button>
+            </div>
+            
+            <div class="p-6 space-y-6">
+                <div id="modal-portion-block">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Select Portion Variant</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="selectPortionOption('Quarter')" id="p-opt-Quarter" class="portion-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Quarter</button>
+                        <button onclick="selectPortionOption('Half')" id="p-opt-Half" class="portion-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Half</button>
+                        <button onclick="selectPortionOption('Full')" id="p-opt-Full" class="portion-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Full</button>
+                    </div>
+                </div>
+
+                <div id="modal-flavor-block" class="hidden">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Select Flavor Profiling</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="selectFlavorOption('Normal')" id="f-opt-Normal" class="flavor-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Normal</button>
+                        <button onclick="selectFlavorOption('Kanthari')" id="f-opt-Kanthari" class="flavor-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Kanthari</button>
+                        <button onclick="selectFlavorOption('Peri Peri')" id="f-opt-Peri-Peri" class="flavor-opt-btn py-2.5 rounded-lg border text-center font-semibold text-sm transition">Peri Peri</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="customer-input-name" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Your Full Name <span class="text-red-500">*</span></label>
+                    <input type="text" id="customer-input-name" placeholder="Enter your name here..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 transition">
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-xl flex justify-between items-center border border-slate-100">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Estimated Subtotal:</span>
+                    <span id="modal-live-subtotal-price" class="text-xl font-extrabold text-slate-900">₹0.00</span>
+                </div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex space-x-2">
+                <button onclick="closeCustomizerModal()" class="w-1/3 bg-white border border-slate-200 text-slate-600 font-semibold text-sm py-3 rounded-xl hover:bg-slate-100 transition">Cancel</button>
+                <button onclick="submitFinalCustomerOrder()" class="w-2/3 bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3 rounded-xl shadow-md transition transform active:scale-95">Place Live Order</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-auth-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl max-w-xs w-full p-6 border border-slate-100 animate-fadeIn">
+            <h3 class="text-lg font-bold text-slate-900 mb-1">Administrative Access</h3>
+            <p class="text-xs text-slate-500 mb-4">Input password passcode to open your management engine console panels.</p>
+            <input type="password" id="admin-passcode-input" placeholder="Enter dashboard pass..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 mb-4 transition">
+            <div class="flex space-x-2">
+                <button onclick="closeAdminAuthModal()" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium text-xs py-2 rounded-lg transition">Dismiss</button>
+                <button onclick="verifyAdminPasscodeCredentials()" class="w-1/2 bg-slate-900 hover:bg-black text-white font-bold text-xs py-2 rounded-lg transition">Verify Log</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-slate-200 mt-20 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-2">
+            <p class="text-sm font-bold tracking-tight">
+                <span class="logo-text-day-red">DAY</span><span class="logo-text-2-yellow">2</span><span class="logo-text-day-green">DAY</span> Restaurant
+            </p>
+            <p class="text-xs text-slate-400">📍 Location Hub: Vennikkulam Junction, Pathanamthitta Route, India</p>
+            <p class="text-[10px] text-slate-300">Real-time Node: GunDB Peer-to-Peer Secure Synchronized Infrastructure.</p>
+        </div>
     </footer>
 
-    <!-- Dynamic food customization and checkout modal sheet -->
-    <div id="item-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden relative shadow-2xl my-8 transform transition-transform duration-300">
-            <button onclick="closeModal()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-red-600 w-10 h-10 rounded-full flex items-center justify-center text-2xl font-bold shadow-md z-10 focus:outline-none">&times;</button>
-            
-            <div class="p-6 md:p-8 space-y-6 pt-12">
-                <div class="border-b pb-4">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span id="modal-badge-emoji" class="text-3xl">🍲</span>
-                        <span id="modal-badge-cat" class="text-xs bg-green-100 text-green-800 font-bold px-3 py-1 rounded-full uppercase tracking-wide">Main Course</span>
-                    </div>
-                    <h4 id="modal-name" class="text-3xl font-extrabold text-green-800 mb-1"></h4>
-                    <p id="modal-price" class="text-2xl font-black text-red-600"></p>
-                    <p id="modal-desc" class="text-gray-600 text-sm mt-3 leading-relaxed"></p>
-                </div>
-
-                <!-- Customization inputs form inside modal -->
-                <div class="bg-gray-50 p-5 rounded-2xl space-y-4 border border-gray-200">
-                    <span class="font-bold text-xs text-gray-400 uppercase tracking-wider block">Customize and Order</span>
-                    
-                    <!-- Required Customer Name input element (Replaced old table dropdown) -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Your Name</label>
-                        <input type="text" id="order-table" placeholder="Enter your name" oninput="this.classList.remove('input-error')" class="w-full border bg-white rounded-xl px-3 py-2.5 text-sm focus:border-green-600 focus:outline-none">
-                    </div>
-
-                    <!-- Quantum control container (Loaded dynamically as portion bar or standard plus/minus) -->
-                    <div id="quantity-control-container">
-                        <!-- Portions list or numerical counters loaded dynamically by Javascript Engine -->
-                    </div>
-
-                    <!-- Customer instructions field -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Special Instructions (Optional)</label>
-                        <input type="text" id="order-notes" placeholder="e.g. Less spicy, Extra lemons, Serve hot..." class="w-full border bg-white rounded-xl px-3 py-2 text-sm focus:border-green-600 focus:outline-none">
-                    </div>
-                </div>
-
-                <!-- Modals button triggers -->
-                <div class="space-y-2">
-                    <button id="submit-order-btn" onclick="submitOrder()" class="w-full bg-green-600 text-white py-4 rounded-full font-bold hover:bg-green-700 transition shadow-lg text-lg flex items-center justify-center gap-2 transform active:scale-95">
-                        <span>Place Order</span>
-                        <!-- Dynamic subtotal badge (Hidden automatically if order represents a rice portion) -->
-                        <span id="modal-order-total" class="bg-green-800 text-white text-xs px-3 py-1 rounded-full font-black">₹0</span>
-                    </button>
-                    <button onclick="closeModal()" class="w-full text-gray-500 font-bold text-sm text-center py-2 hover:text-red-600 transition border-0 bg-transparent cursor-pointer">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Live Order Placement Confirmation Modal -->
-    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center space-y-6 shadow-2xl">
-            <div class="w-20 h-20 bg-green-100 text-green-600 text-5xl rounded-full flex items-center justify-center mx-auto">✓</div>
-            <div>
-                <h4 class="text-2xl font-bold text-green-800">Order Placed!</h4>
-                <p class="text-gray-500 text-sm mt-1">Our live kitchen has received your ticket and is preparing it hot!</p>
-            </div>
-            <button onclick="closeSuccessModal()" class="w-full bg-green-600 text-white py-3 rounded-full font-bold hover:bg-green-700 transition">Awesome</button>
-        </div>
-    </div>
-
-    <!-- Custom Administrative deletion checker (Prevents buggy browser alerts) -->
-    <div id="delete-confirm-modal" class="fixed inset-0 bg-black bg-opacity-65 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl relative text-center space-y-6">
-            <div class="w-16 h-16 bg-red-100 text-red-600 text-3xl rounded-full flex items-center justify-center mx-auto">⚠️</div>
-            <div>
-                <h3 class="text-2xl font-bold text-gray-800">Delete Menu Item?</h3>
-                <p class="text-gray-500 text-sm mt-2">Are you sure you want to permanently delete <strong id="delete-item-name" class="text-red-650"></strong> from the digital menu?</p>
-            </div>
-            <div class="flex gap-4">
-                <button onclick="closeDeleteModal()" class="w-1/2 bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 rounded-full font-bold transition">Cancel</button>
-                <button onclick="executeDeleteFoodItem()" class="w-1/2 bg-red-600 hover:bg-red-700 text-white py-3 rounded-full font-bold transition shadow-md">Yes, Delete</button>
-            </div>
-        </div>
-    </div>
+    <script src="app.js"></script>
+</body>
+</html>
