@@ -17,10 +17,10 @@ try {
 const FOOD_PRODUCTS_REGISTRY = [
     { id: "p1", name: "Chicken Mandhi", category: "rice-items", desc: "Traditional Arabian rice layered dish paired with charcoal-baked tender chicken.", basePrice: 160, hasPortions: true },
     { id: "p2", name: "Al Faham Chicken", category: "al-faham", desc: "Flame grilled chicken infused with specialized Arabian spices seasoning blends.", basePrice: 150, hasPortions: true, hasFlavors: true },
-    { id: "p3", name: "Beef Mandhi", category: "rice-items", desc: "Rich slow-cooked premium tender beef slices combined over aromatic stock-steamed basmati grains.", basePrice: 190, hasPortions: true },
+    { id: "p3", name: "Beef Mandhi", category: "rice-items", desc: "Rich slow-cooked premium tender beef slices combined over aromatic stock-steamed basmati grains.", basePrice: 210, hasPortions: true },
     { id: "p4", name: "Peri Peri Al Faham", category: "al-faham", desc: "Spicy fire-grilled barbecue profile finished with african bird eye pepper coats.", basePrice: 170, hasPortions: true, hasFlavors: true },
-    { id: "p5", name: "Fresh Mint Lime juice", category: "beverages", desc: "Chilled crushing refresh beverage extracted with mint leaves and fresh lime juice.", basePrice: 40, hasPortions: false },
-    { id: "p6", name: "Traditional Blue Lime Mojito", category: "beverages", desc: "Effervescent sweet sparkling tonic layer with deep curacao extract profiles.", basePrice: 80, hasPortions: false }
+    { id: "p5", name: "madhooth", category: "rice-items", desc: "Chilled crushing refresh beverage extracted with mint leaves and fresh lime juice.", basePrice: 190, hasPortions: false },
+    { id: "p6", name: "kanthari alfaham", category: "al-faham", desc: "Effervescent sweet sparkling tonic layer with deep curacao extract profiles.", basePrice: 150, hasPortions: false }
 ];
 
 // Portion Pricing Scaling Modifiers Config
