@@ -20,7 +20,8 @@ const FOOD_PRODUCTS_REGISTRY = [
     { id: "p3", name: "Beef Mandhi", category: "rice-items", desc: "Rich slow-cooked premium tender beef slices combined over aromatic stock-steamed basmati grains.", basePrice: 210, hasPortions: true },
     { id: "p4", name: "Peri Peri Al Faham", category: "rice-items", desc: "Spicy fire-grilled barbecue profile finished with african bird eye pepper coats.", basePrice: 170, hasPortions: true, hasFlavors: true },
     { id: "p5", name: "madhooth", category: "rice-items", desc: "Chilled crushing refresh beverage extracted with mint leaves and fresh lime juice.", basePrice: 190, hasPortions: false },
-    { id: "p6", name: "kanthari alfaham", category: "rice-items", desc: "Effervescent sweet sparkling tonic layer with deep curacao extract profiles.", basePrice: 150, hasPortions: false }
+    { id: "p6", name: "madfoon chicken", category: "rice-items", desc: "Effervescent sweet sparkling tonic layer with deep curacao extract profiles.", basePrice: 210, hasPortions: false }
+   
 ];
 
 // Portion Pricing Scaling Modifiers Config
