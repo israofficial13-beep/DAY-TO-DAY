@@ -2078,6 +2078,10 @@
             const item = window.menuItems.find(i => i.id === id);
             if (item) {
                 item.available = (item.available === undefined) ? false : !item.available;
+                
+                window.renderAdminMenuList();
+                window.renderMenu();
+                
                 if (window.pushDatabaseUpdates) window.pushDatabaseUpdates();
                 const availabilityText = item.available ? "In Stock" : "Sold Out";
                 showToast(`"${item.displayName}" status set to: ${availabilityText}!`, true);
@@ -2101,6 +2105,10 @@
             const newItem = { id: newId, displayName: name, price: price, category: category, desc: desc, available: true };
 
             window.menuItems.push(newItem);
+            
+            window.renderAdminMenuList();
+            window.renderMenu();
+            
             if (window.pushDatabaseUpdates) {
                 window.pushDatabaseUpdates();
                 showToast(`"${name}" was successfully added to your digital menu!`, true);
@@ -2121,6 +2129,10 @@
             const item = window.menuItems[index];
 
             item.price = cleanPrice;
+            
+            window.renderAdminMenuList();
+            window.renderMenu();
+            
             if (window.pushDatabaseUpdates) {
                 window.pushDatabaseUpdates();
                 showToast(`Saved changes for ${item.displayName}!`, true);
@@ -2143,6 +2155,10 @@
             if (window.itemIndexToDelete !== null) {
                 const item = window.menuItems[window.itemIndexToDelete];
                 window.menuItems = window.menuItems.filter(i => i.id !== item.id);
+                
+                window.renderAdminMenuList();
+                window.renderMenu();
+                
                 if (window.pushDatabaseUpdates) {
                     window.pushDatabaseUpdates();
                     window.closeDeleteModal();
@@ -2154,6 +2170,9 @@
         window.deleteArchivedOrder = function(ids) {
             const idArray = Array.isArray(ids) ? ids : [ids];
             window.orders = window.orders.filter(item => !idArray.includes(item.id));
+            
+            window.renderSalesHistory();
+            
             if (window.pushDatabaseUpdates) window.pushDatabaseUpdates();
             showToast("Order ticket permanently purged.", true);
         };
@@ -2262,6 +2281,9 @@
                     o.paymentStatus = nextState;
                 }
             });
+            
+            window.renderActiveRoleDashboards();
+            
             if (window.pushDatabaseUpdates) window.pushDatabaseUpdates();
             window.showToast(`Payment status updated to ${nextState}!`, true);
         };
@@ -2274,6 +2296,10 @@
                     o.status = status;
                 }
             });
+            
+            window.renderActiveRoleDashboards();
+            window.updateNavbarOrderBadge();
+            
             if (window.pushDatabaseUpdates) window.pushDatabaseUpdates();
             window.showToast(`Order status updated to ${status}!`, true);
         };
